@@ -9,7 +9,6 @@ window.renderStatistics = function (ctx, names, times) {
   var BAR_MAX_HEIGHT = BAR_CHART - FONT_HEIGHT;
   var BAR_WIDTH = 40;
   var BAR_GAP = 50;
-  var BAR_REPEAT = BAR_WIDTH + BAR_GAP;
   var CLOUD_X = 100;
   var CLOUD_Y = 10;
   var CLOUD_PADDING_WIDTH = 55;
@@ -18,7 +17,6 @@ window.renderStatistics = function (ctx, names, times) {
   var CLOUD_HEIGHT = 270;
   var CLOUD_ANGLE = 20;
   var CLOUD_CENTER_X = CLOUD_WIDTH / 2 + CLOUD_X;
-  var CLOUD_START_X = CLOUD_X + CLOUD_PADDING_WIDTH;
 
   // функции
   var getMaxElem = function (arr) {
@@ -35,7 +33,7 @@ window.renderStatistics = function (ctx, names, times) {
     return Math.floor(Math.random() * (max - min)) + min;
   };
 
-  var drawCloud = function(x, y, width, height, angle, color) {
+  var drawCloud = function (x, y, width, height, angle, color) {
     ctx.fillStyle = color;
     ctx.beginPath();
     ctx.moveTo(x, y);
@@ -51,7 +49,7 @@ window.renderStatistics = function (ctx, names, times) {
     ctx.fill();
   };
 
-  var drawText = function(text, x, y, font, hAlign, vAlign, color) {
+  var drawText = function (text, x, y, font, hAlign, vAlign, color) {
     ctx.fillStyle = color;
     ctx.font = font;
     ctx.textAlign = hAlign;
@@ -59,7 +57,7 @@ window.renderStatistics = function (ctx, names, times) {
     ctx.fillText(text, x, y);
   };
 
-  var drawBar = function(x, y, width, height, color) {
+  var drawBar = function (x, y, width, height, color) {
     ctx.fillStyle = color;
     ctx.fillRect(x, y, width, height);
   };
@@ -75,16 +73,20 @@ window.renderStatistics = function (ctx, names, times) {
   // гистограмма
   var maxTime = getMaxElem(times);
   var barColor;
+  var coordX;
 
   for (var i = 0; i < names.length; i++) {
     var time = Math.round(times[i]);
     var barHeight = time * BAR_MAX_HEIGHT / maxTime;
     var barMarginTop = BAR_MAX_HEIGHT - barHeight;
     barColor = names[i] === 'Вы' ? 'rgba(255, 0, 0, 1)' : 'rgba(0, 0, ' + getRandomInt(80, 176) + ')';
+    coordX = CLOUD_X + CLOUD_PADDING_WIDTH + (BAR_WIDTH + BAR_GAP) * i;
 
-    drawBar(CLOUD_START_X + BAR_REPEAT * i, CLOUD_PADDING_HEIGHT + barMarginTop + FONT_HEIGHT * 4, BAR_WIDTH, barHeight, barColor);
-    drawText(time, CLOUD_START_X + BAR_WIDTH / 2 + BAR_REPEAT * i, CLOUD_PADDING_HEIGHT + barMarginTop + FONT_HEIGHT * 3 + 10, FONT, 'center', 'alphabetic', '#000');
-    drawText(names[i], CLOUD_START_X + BAR_WIDTH / 2 + BAR_REPEAT * i, CLOUD_PADDING_HEIGHT + BAR_MAX_HEIGHT + FONT_HEIGHT * 5, FONT, 'center', 'alphabetic', '#000');
+    drawBar(coordX, CLOUD_PADDING_HEIGHT + barMarginTop + FONT_HEIGHT * 4, BAR_WIDTH, barHeight, barColor);
+    drawText(time, coordX + BAR_WIDTH / 2, CLOUD_PADDING_HEIGHT + barMarginTop + FONT_HEIGHT * 3 + 10, FONT, 'center', 'alphabetic', '#000');
+    drawText(names[i], coordX + BAR_WIDTH / 2, CLOUD_PADDING_HEIGHT + BAR_MAX_HEIGHT + FONT_HEIGHT * 5, FONT, 'center', 'alphabetic', '#000');
   }
 
 };
+
+
