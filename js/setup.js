@@ -6,7 +6,7 @@ document.querySelector('.setup-similar').classList.remove('hidden');
 var mageList = document.querySelector('.setup-similar-list');
 var mageItemTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
-var firstName = [
+var FIRST_NAME = [
   'Иван',
   'Хуан Себастьян',
   'Мария',
@@ -17,7 +17,7 @@ var firstName = [
   'Вашингтон'
 ];
 
-var lastName = [
+var LAST_NAME = [
   'да Марья',
   'Верон',
   'Мирабелла',
@@ -28,7 +28,7 @@ var lastName = [
   'Ирвинг'
 ];
 
-var coatColor = [
+var COAT_COLOR = [
   'rgb(101, 137, 164)',
   'rgb(241, 43, 107)',
   'rgb(146, 100, 161)',
@@ -37,13 +37,15 @@ var coatColor = [
   'rgb(0, 0, 0)'
 ];
 
-var eyesColor = [
+var EYES_COLOR = [
   'black',
   'red',
   'blue',
   'yellow',
   'green'
 ];
+
+var MAGES_AMOUNT = 4;
 
 var getRandElem = function (arr) {
   var randomIndex = Math.random() * arr.length;
@@ -54,21 +56,16 @@ var getRandElem = function (arr) {
 
 /**
  * Создает мага
- * @param  {array} arrName     - Имена
- * @param  {array} arrLastName - Фамилии
- * @param  {array} arrCoat     - Пальто
- * @param  {array} arrEyes     - Глаза
- * @param  {number} amount     - Количество магов
- * @return {array}             - Массив из магов
+ * @return {array} - Массив из MAGES_AMOUNT магов
  */
-var createMages = function (arrName, arrLastName, arrCoat, arrEyes, amount) {
+var createMages = function () {
   var mages = [];
 
-  for (var i = 0; i < amount; i++) {
+  for (var i = 0; i < MAGES_AMOUNT; i++) {
     mages[i] = {
-      name: getRandElem(arrName) + ' ' + getRandElem(arrLastName),
-      coatColor: getRandElem(arrCoat),
-      eyesColor: getRandElem(arrEyes)
+      name: getRandElem(FIRST_NAME) + ' ' + getRandElem(LAST_NAME),
+      coatColor: getRandElem(COAT_COLOR),
+      eyesColor: getRandElem(EYES_COLOR)
     };
   }
 
@@ -77,12 +74,11 @@ var createMages = function (arrName, arrLastName, arrCoat, arrEyes, amount) {
 
 /**
  * Создает DOM-элемент мага
- * @param  {object} data         - Данные для шаблона
- * @param  {DOMElement} template - Шаблон
- * @return {DOMElement}          - Маг
+ * @param  {object} data - Данные для шаблона
+ * @return {DOMElement}  - Маг
  */
-var createMageDOMElement = function (data, template) {
-  var mage = template.cloneNode(true);
+var createMageDOMElement = function (data) {
+  var mage = mageItemTemplate.cloneNode(true);
   mage.querySelector('.setup-similar-label').textContent = data.name;
   mage.querySelector('.wizard-coat').style.fill = data.coatColor;
   mage.querySelector('.wizard-eyes').style.fill = data.eyesColor;
@@ -92,22 +88,21 @@ var createMageDOMElement = function (data, template) {
 
 /**
  * Создает DOM-элементы магов и вставляет в разметку
- * @param  {array} data          - Данные для шаблона
- * @param  {DOMElement} template - Шаблон
- * @param  {DOMElement} where    - Место вставки
+ * @param  {array} data - Данные для шаблона
  */
-var insertDOMElements = function (data, template, where) {
+var insertDOMElements = function (data) {
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < data.length; i++) {
-    var mage = createMageDOMElement(data[i], template);
+    var mage = createMageDOMElement(data[i]);
     fragment.appendChild(mage);
   }
 
-  where.appendChild(fragment);
+  mageList.appendChild(fragment);
 };
 
 
-var mages = createMages(firstName, lastName, coatColor, eyesColor, 4);
-insertDOMElements(mages, mageItemTemplate, mageList);
+var mages = createMages();
+insertDOMElements(mages);
+
 
