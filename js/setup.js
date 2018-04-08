@@ -6,7 +6,7 @@ document.querySelector('.setup-similar').classList.remove('hidden');
 var mageList = document.querySelector('.setup-similar-list');
 var mageItemTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
-var FIRST_NAME = [
+var FIRST_NAMES = [
   'Иван',
   'Хуан Себастьян',
   'Мария',
@@ -17,7 +17,7 @@ var FIRST_NAME = [
   'Вашингтон'
 ];
 
-var LAST_NAME = [
+var LAST_NAMES = [
   'да Марья',
   'Верон',
   'Мирабелла',
@@ -28,7 +28,7 @@ var LAST_NAME = [
   'Ирвинг'
 ];
 
-var COAT_COLOR = [
+var COAT_COLORS = [
   'rgb(101, 137, 164)',
   'rgb(241, 43, 107)',
   'rgb(146, 100, 161)',
@@ -37,7 +37,7 @@ var COAT_COLOR = [
   'rgb(0, 0, 0)'
 ];
 
-var EYES_COLOR = [
+var EYES_COLORS = [
   'black',
   'red',
   'blue',
@@ -63,9 +63,9 @@ var createMages = function () {
 
   for (var i = 0; i < MAGES_AMOUNT; i++) {
     mages[i] = {
-      name: getRandElem(FIRST_NAME) + ' ' + getRandElem(LAST_NAME),
-      coatColor: getRandElem(COAT_COLOR),
-      eyesColor: getRandElem(EYES_COLOR)
+      name: getRandElem(FIRST_NAMES) + ' ' + getRandElem(LAST_NAMES),
+      coatColor: getRandElem(COAT_COLORS),
+      eyesColor: getRandElem(EYES_COLORS)
     };
   }
 
