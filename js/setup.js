@@ -1,6 +1,5 @@
 'use strict';
 
-document.querySelector('.setup').classList.remove('hidden');
 document.querySelector('.setup-similar').classList.remove('hidden');
 
 var mageList = document.querySelector('.setup-similar-list');
@@ -45,7 +44,18 @@ var EYES_COLORS = [
   'green'
 ];
 
+var FIREBALL_COLORS = [
+  '#ee4830',
+  '#30a8ee',
+  '#5ce6c0',
+  '#e848d5',
+  '#e6e848'
+];
+
 var MAGES_AMOUNT = 4;
+
+var KEY_ENTER = 13;
+var KEY_ESC = 27;
 
 var getRandElem = function (arr) {
   var randomIndex = Math.random() * arr.length;
@@ -104,5 +114,60 @@ var insertDOMElements = function (data) {
 
 var mages = createMages();
 insertDOMElements(mages);
+
+
+var setup = document.querySelector('.setup');
+var avatar = document.querySelector('.setup-open');
+var avatarImg = avatar.querySelector('.setup-open-icon');
+var setupCross = setup.querySelector('.setup-close');
+var setupUserName = setup.querySelector('.setup-user-name');
+var setupEyes = setup.querySelector('.setup-wizard .wizard-eyes');
+var setupEyesVal = setup.querySelector('input[name=eyes-color]');
+var setupFireBall = setup.querySelector('.setup-fireball-wrap');
+var setupFireBallVal = setup.querySelector('input[name=fireball-color]');
+
+var onEscKeydown = function (e) {
+  if (e.keyCode === KEY_ESC) {
+    closeSetup();
+  }
+};
+
+var closeSetup = function () {
+  setup.classList.add('hidden');
+  document.removeEventListener('keydown', onEscKeydown);
+};
+
+var openSetup = function () {
+  setup.classList.remove('hidden');
+  document.addEventListener('keydown', onEscKeydown);
+};
+
+avatar.addEventListener('click', openSetup);
+avatarImg.addEventListener('keydown', function (e) {
+  if (e.keyCode === KEY_ENTER) {
+    openSetup();
+  }
+});
+
+setupCross.addEventListener('click', closeSetup);
+setupCross.addEventListener('keydown', function (e) {
+  if (e.keyCode === KEY_ENTER) {
+    closeSetup();
+  }
+});
+
+setupUserName.addEventListener('keydown', function (e) {
+  e.stopPropagation();
+});
+
+setupEyes.addEventListener('click', function (e) {
+  e.target.style.fill = getRandElem(EYES_COLORS);
+  setupEyesVal.value = e.target.style.fill;
+});
+
+setupFireBall.addEventListener('click', function (e) {
+  e.target.style.backgroundColor = getRandElem(FIREBALL_COLORS);
+  setupFireBallVal.value = e.target.style.backgroundColor;
+});
 
 
