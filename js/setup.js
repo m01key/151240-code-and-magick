@@ -1,10 +1,6 @@
 'use strict';
 
-document.querySelector('.setup-similar').classList.remove('hidden');
-
-var mageList = document.querySelector('.setup-similar-list');
-var mageItemTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-
+// КОНСТАНТЫ
 var FIRST_NAMES = [
   'Иван',
   'Хуан Себастьян',
@@ -57,6 +53,22 @@ var MAGES_AMOUNT = 4;
 var KEY_ENTER = 13;
 var KEY_ESC = 27;
 
+
+// ПЕРЕМЕННЫЕ (пути)
+var mageListElement = document.querySelector('.setup-similar-list');
+var mageItemTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
+var setupElement = document.querySelector('.setup');
+var avatarElement = document.querySelector('.setup-open');
+var avatarImgElement = avatarElement.querySelector('.setup-open-icon');
+var setupCrossElement = setupElement.querySelector('.setup-close');
+var setupUserNameElement = setupElement.querySelector('.setup-user-name');
+var setupEyesElement = setupElement.querySelector('.setup-wizard .wizard-eyes');
+var setupEyesValElement = setupElement.querySelector('input[name=eyes-color]');
+var setupFireBallElement = setupElement.querySelector('.setup-fireball-wrap');
+var setupFireBallValElement = setupElement.querySelector('input[name=fireball-color]');
+
+
+// ФУНКЦИИ
 var getRandElem = function (arr) {
   var randomIndex = Math.random() * arr.length;
   randomIndex = Math.floor(randomIndex);
@@ -108,23 +120,8 @@ var insertDOMElements = function (data) {
     fragment.appendChild(mage);
   }
 
-  mageList.appendChild(fragment);
+  mageListElement.appendChild(fragment);
 };
-
-
-var mages = createMages();
-insertDOMElements(mages);
-
-
-var setup = document.querySelector('.setup');
-var avatar = document.querySelector('.setup-open');
-var avatarImg = avatar.querySelector('.setup-open-icon');
-var setupCross = setup.querySelector('.setup-close');
-var setupUserName = setup.querySelector('.setup-user-name');
-var setupEyes = setup.querySelector('.setup-wizard .wizard-eyes');
-var setupEyesVal = setup.querySelector('input[name=eyes-color]');
-var setupFireBall = setup.querySelector('.setup-fireball-wrap');
-var setupFireBallVal = setup.querySelector('input[name=fireball-color]');
 
 var onEscKeydown = function (e) {
   if (e.keyCode === KEY_ESC) {
@@ -133,41 +130,48 @@ var onEscKeydown = function (e) {
 };
 
 var closeSetup = function () {
-  setup.classList.add('hidden');
+  setupElement.classList.add('hidden');
   document.removeEventListener('keydown', onEscKeydown);
 };
 
 var openSetup = function () {
-  setup.classList.remove('hidden');
+  setupElement.classList.remove('hidden');
   document.addEventListener('keydown', onEscKeydown);
 };
 
-avatar.addEventListener('click', openSetup);
-avatarImg.addEventListener('keydown', function (e) {
+
+// СОБЫТИЯ
+avatarElement.addEventListener('click', openSetup);
+avatarImgElement.addEventListener('keydown', function (e) {
   if (e.keyCode === KEY_ENTER) {
     openSetup();
   }
 });
 
-setupCross.addEventListener('click', closeSetup);
-setupCross.addEventListener('keydown', function (e) {
+setupCrossElement.addEventListener('click', closeSetup);
+setupCrossElement.addEventListener('keydown', function (e) {
   if (e.keyCode === KEY_ENTER) {
     closeSetup();
   }
 });
 
-setupUserName.addEventListener('keydown', function (e) {
+setupUserNameElement.addEventListener('keydown', function (e) {
   e.stopPropagation();
 });
 
-setupEyes.addEventListener('click', function (e) {
+setupEyesElement.addEventListener('click', function (e) {
   e.target.style.fill = getRandElem(EYES_COLORS);
-  setupEyesVal.value = e.target.style.fill;
+  setupEyesValElement.value = e.target.style.fill;
 });
 
-setupFireBall.addEventListener('click', function (e) {
+setupFireBallElement.addEventListener('click', function (e) {
   e.target.style.backgroundColor = getRandElem(FIREBALL_COLORS);
-  setupFireBallVal.value = e.target.style.backgroundColor;
+  setupFireBallValElement.value = e.target.style.backgroundColor;
 });
 
+
+// ВЫПОЛНЕНИЕ
+document.querySelector('.setup-similar').classList.remove('hidden');
+var mages = createMages();
+insertDOMElements(mages);
 
