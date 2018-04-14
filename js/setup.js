@@ -160,18 +160,21 @@ setupUserNameElement.addEventListener('keydown', function (e) {
 });
 
 setupEyesElement.addEventListener('click', function (e) {
-  e.target.style.fill = getRandElem(EYES_COLORS);
-  setupEyesValElement.value = e.target.style.fill;
+  var color = getRandElem(EYES_COLORS);
+  e.target.style.fill = color;
+  setupEyesValElement.value = color;
 });
 
 setupFireBallElement.addEventListener('click', function (e) {
-  e.target.style.backgroundColor = getRandElem(FIREBALL_COLORS);
-  setupFireBallValElement.value = e.target.style.backgroundColor;
+  var color = getRandElem(FIREBALL_COLORS);
+  e.target.style.backgroundColor = color;
+  setupFireBallValElement.value = color;
 });
 
 
 // ВЫПОЛНЕНИЕ
 document.querySelector('.setup-similar').classList.remove('hidden');
+
 var mages = createMages();
 insertDOMElements(mages);
 
