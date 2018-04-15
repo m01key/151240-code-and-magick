@@ -62,7 +62,9 @@ var avatarElement = document.querySelector('.setup-open');
 var avatarImgElement = avatarElement.querySelector('.setup-open-icon');
 var setupCrossElement = setupElement.querySelector('.setup-close');
 var setupUserNameElement = setupElement.querySelector('.setup-user-name');
-var setupEyesElement = setupElement.querySelector('.setup-wizard .wizard-eyes');
+var setupCoatElement = setupElement.querySelector('.wizard-coat');
+var setupCoatValElement = setupElement.querySelector('input[name=coat-color]');
+var setupEyesElement = setupElement.querySelector('.wizard-eyes');
 var setupEyesValElement = setupElement.querySelector('input[name=eyes-color]');
 var setupFireBallElement = setupElement.querySelector('.setup-fireball-wrap');
 var setupFireBallValElement = setupElement.querySelector('input[name=fireball-color]');
@@ -77,7 +79,7 @@ var getRandElem = function (arr) {
 };
 
 /**
- * Создает мага
+ * Создает магов
  * @return {array} - Массив из MAGES_AMOUNT магов
  */
 var createMages = function () {
@@ -159,16 +161,22 @@ setupUserNameElement.addEventListener('keydown', function (e) {
   e.stopPropagation();
 });
 
-setupEyesElement.addEventListener('click', function (e) {
+setupEyesElement.addEventListener('click', function () {
   var color = getRandElem(EYES_COLORS);
-  e.target.style.fill = color;
+  setupEyesElement.style.fill = color;
   setupEyesValElement.value = color;
 });
 
-setupFireBallElement.addEventListener('click', function (e) {
+setupFireBallElement.addEventListener('click', function () {
   var color = getRandElem(FIREBALL_COLORS);
-  e.target.style.backgroundColor = color;
+  setupFireBallElement.style.backgroundColor = color;
   setupFireBallValElement.value = color;
+});
+
+setupCoatElement.addEventListener('click', function () {
+  var color = getRandElem(COAT_COLORS);
+  setupCoatElement.style.fill = color;
+  setupCoatValElement.value = color;
 });
 
 
