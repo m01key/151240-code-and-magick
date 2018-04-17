@@ -19,7 +19,7 @@ window.renderStatistics = function (ctx, names, times) {
   var CLOUD_CENTER_X = CLOUD_WIDTH / 2 + CLOUD_X;
 
   // функции
-  var getMaxElem = function (arr) {
+  function getMaxElem(arr) {
     var max = 0;
     for (var i = 0; i < arr.length; i++) {
       if (arr[i] > max) {
@@ -27,13 +27,13 @@ window.renderStatistics = function (ctx, names, times) {
       }
     }
     return max;
-  };
+  }
 
-  var getRandomInt = function (min, max) {
+  function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
-  };
+  }
 
-  var drawCloud = function (x, y, width, height, angle, color) {
+  function drawCloud(x, y, width, height, angle, color) {
     ctx.fillStyle = color;
     ctx.beginPath();
     ctx.moveTo(x, y);
@@ -47,20 +47,20 @@ window.renderStatistics = function (ctx, names, times) {
     ctx.lineTo(x + angle, y);
     ctx.closePath();
     ctx.fill();
-  };
+  }
 
-  var drawText = function (text, x, y, font, hAlign, vAlign, color) {
+  function drawText(text, x, y, font, hAlign, vAlign, color) {
     ctx.fillStyle = color;
     ctx.font = font;
     ctx.textAlign = hAlign;
     ctx.textBaseline = vAlign;
     ctx.fillText(text, x, y);
-  };
+  }
 
-  var drawBar = function (x, y, width, height, color) {
+  function drawBar(x, y, width, height, color) {
     ctx.fillStyle = color;
     ctx.fillRect(x, y, width, height);
-  };
+  }
 
   // облако
   drawCloud(CLOUD_X + 10, CLOUD_Y + 10, CLOUD_WIDTH, CLOUD_HEIGHT, CLOUD_ANGLE, 'rgba(0, 0, 0, 0.7)');
