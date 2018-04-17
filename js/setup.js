@@ -71,18 +71,18 @@ var setupFireBallValElement = setupElement.querySelector('input[name=fireball-co
 
 
 // ФУНКЦИИ
-var getRandElem = function (arr) {
+function getRandElem(arr) {
   var randomIndex = Math.random() * arr.length;
   randomIndex = Math.floor(randomIndex);
 
   return arr[randomIndex];
-};
+}
 
 /**
  * Создает магов
  * @return {array} - Массив из MAGES_AMOUNT магов
  */
-var createMages = function () {
+function createMages() {
   var mages = [];
 
   for (var i = 0; i < MAGES_AMOUNT; i++) {
@@ -94,27 +94,27 @@ var createMages = function () {
   }
 
   return mages;
-};
+}
 
 /**
  * Создает DOM-элемент мага
  * @param  {object} data - Данные для шаблона
  * @return {DOMElement}  - Маг
  */
-var createMageDOMElement = function (data) {
+function createMageDOMElement(data) {
   var mage = mageItemTemplate.cloneNode(true);
   mage.querySelector('.setup-similar-label').textContent = data.name;
   mage.querySelector('.wizard-coat').style.fill = data.coatColor;
   mage.querySelector('.wizard-eyes').style.fill = data.eyesColor;
 
   return mage;
-};
+}
 
 /**
  * Создает DOM-элементы магов и вставляет в разметку
  * @param  {array} data - Данные для шаблона
  */
-var insertDOMElements = function (data) {
+function insertDOMElements(data) {
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < data.length; i++) {
@@ -123,23 +123,24 @@ var insertDOMElements = function (data) {
   }
 
   mageListElement.appendChild(fragment);
-};
+}
 
-var onEscKeydown = function (e) {
+function onEscKeydown(e) {
   if (e.keyCode === KEY_ESC) {
     closeSetup();
   }
-};
+}
 
-var closeSetup = function () {
+function closeSetup() {
   setupElement.classList.add('hidden');
   document.removeEventListener('keydown', onEscKeydown);
-};
+}
 
-var openSetup = function () {
+// setupElement.classList.remove('hidden'); // убрать
+function openSetup() {
   setupElement.classList.remove('hidden');
   document.addEventListener('keydown', onEscKeydown);
-};
+}
 
 
 // СОБЫТИЯ
