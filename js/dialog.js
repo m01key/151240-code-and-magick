@@ -1,7 +1,33 @@
 'use strict';
 
+var KEY_ENTER = 13;
+var KEY_ESC = 27;
+
 var setupElement = document.querySelector('.setup');
 var setupUserPicElement = setupElement.querySelector('.setup-user-pic');
+var avatarElement = document.querySelector('.setup-open');
+var avatarImgElement = avatarElement.querySelector('.setup-open-icon');
+var setupCrossElement = setupElement.querySelector('.setup-close');
+var setupUserNameElement = setupElement.querySelector('.setup-user-name');
+
+
+function openSetup() {
+  setupElement.classList.remove('hidden');
+  document.addEventListener('keydown', onEscKeydown);
+}
+
+function closeSetup() {
+  setupElement.classList.add('hidden');
+  document.removeEventListener('keydown', onEscKeydown);
+  setupElement.style.left = '';
+  setupElement.style.top = '';
+}
+
+function onEscKeydown(e) {
+  if (e.keyCode === KEY_ESC) {
+    closeSetup();
+  }
+}
 
 
 setupUserPicElement.addEventListener('mousedown', function (e) {
@@ -44,4 +70,23 @@ setupUserPicElement.addEventListener('mousedown', function (e) {
   document.addEventListener('mouseup', onMouseUp);
 
 });
+
+avatarElement.addEventListener('click', openSetup);
+avatarImgElement.addEventListener('keydown', function (e) {
+  if (e.keyCode === KEY_ENTER) {
+    openSetup();
+  }
+});
+
+setupCrossElement.addEventListener('click', closeSetup);
+setupCrossElement.addEventListener('keydown', function (e) {
+  if (e.keyCode === KEY_ENTER) {
+    closeSetup();
+  }
+});
+
+setupUserNameElement.addEventListener('keydown', function (e) {
+  e.stopPropagation();
+});
+
 

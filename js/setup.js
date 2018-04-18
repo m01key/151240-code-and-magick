@@ -50,30 +50,21 @@ var FIREBALL_COLORS = [
 
 var MAGES_AMOUNT = 4;
 
-var KEY_ENTER = 13;
-
-var KEY_ESC = 27;
-
 
 // ПЕРЕМЕННЫЕ (пути)
-var mageListElement = document.querySelector('.setup-similar-list');
 var mageItemTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-var avatarElement = document.querySelector('.setup-open');
-var avatarImgElement = avatarElement.querySelector('.setup-open-icon');
+var mageListElement = document.querySelector('.setup-similar-list');
 var setupElement = document.querySelector('.setup');
-var setupCrossElement = setupElement.querySelector('.setup-close');
-var setupUserNameElement = setupElement.querySelector('.setup-user-name');
 var setupCoatElement = setupElement.querySelector('.wizard-coat');
 var setupCoatValElement = setupElement.querySelector('input[name=coat-color]');
 var setupEyesElement = setupElement.querySelector('.wizard-eyes');
 var setupEyesValElement = setupElement.querySelector('input[name=eyes-color]');
 var setupFireBallElement = setupElement.querySelector('.setup-fireball-wrap');
 var setupFireBallValElement = setupElement.querySelector('input[name=fireball-color]');
-var setupElementLeft;
-var setupElementTop;
 var artifactsShopElement = setupElement.querySelector('.setup-artifacts-shop');
 var artifactsElement = setupElement.querySelector('.setup-artifacts');
 var artifact;
+
 
 // ФУНКЦИИ
 function getRandElem(arr) {
@@ -130,46 +121,8 @@ function insertDOMElements(data) {
   mageListElement.appendChild(fragment);
 }
 
-function onEscKeydown(e) {
-  if (e.keyCode === KEY_ESC) {
-    closeSetup();
-  }
-}
-
-function closeSetup() {
-  setupElement.classList.add('hidden');
-  document.removeEventListener('keydown', onEscKeydown);
-  setupElement.style.left = setupElementLeft + 'px';
-  setupElement.style.top = setupElementTop + 'px';
-}
-
-function openSetup() {
-  setupElement.classList.remove('hidden');
-  setupElementLeft = setupElement.offsetLeft;
-  setupElementTop = setupElement.offsetTop;
-  document.addEventListener('keydown', onEscKeydown);
-}
-
 
 // СОБЫТИЯ
-avatarElement.addEventListener('click', openSetup);
-avatarImgElement.addEventListener('keydown', function (e) {
-  if (e.keyCode === KEY_ENTER) {
-    openSetup();
-  }
-});
-
-setupCrossElement.addEventListener('click', closeSetup);
-setupCrossElement.addEventListener('keydown', function (e) {
-  if (e.keyCode === KEY_ENTER) {
-    closeSetup();
-  }
-});
-
-setupUserNameElement.addEventListener('keydown', function (e) {
-  e.stopPropagation();
-});
-
 setupEyesElement.addEventListener('click', function () {
   var color = getRandElem(EYES_COLORS);
   setupEyesElement.style.fill = color;
@@ -187,7 +140,6 @@ setupCoatElement.addEventListener('click', function () {
   setupCoatElement.style.fill = color;
   setupCoatValElement.value = color;
 });
-
 
 artifactsShopElement.addEventListener('dragstart', function (e) {
   artifact = e.target.cloneNode();
