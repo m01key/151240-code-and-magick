@@ -51,15 +51,16 @@ var FIREBALL_COLORS = [
 var MAGES_AMOUNT = 4;
 
 var KEY_ENTER = 13;
+
 var KEY_ESC = 27;
 
 
 // ПЕРЕМЕННЫЕ (пути)
 var mageListElement = document.querySelector('.setup-similar-list');
 var mageItemTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-var setupElement = document.querySelector('.setup');
 var avatarElement = document.querySelector('.setup-open');
 var avatarImgElement = avatarElement.querySelector('.setup-open-icon');
+var setupElement = document.querySelector('.setup');
 var setupCrossElement = setupElement.querySelector('.setup-close');
 var setupUserNameElement = setupElement.querySelector('.setup-user-name');
 var setupCoatElement = setupElement.querySelector('.wizard-coat');
@@ -68,7 +69,8 @@ var setupEyesElement = setupElement.querySelector('.wizard-eyes');
 var setupEyesValElement = setupElement.querySelector('input[name=eyes-color]');
 var setupFireBallElement = setupElement.querySelector('.setup-fireball-wrap');
 var setupFireBallValElement = setupElement.querySelector('input[name=fireball-color]');
-
+var setupElementLeft;
+var setupElementTop;
 
 // ФУНКЦИИ
 function getRandElem(arr) {
@@ -134,11 +136,14 @@ function onEscKeydown(e) {
 function closeSetup() {
   setupElement.classList.add('hidden');
   document.removeEventListener('keydown', onEscKeydown);
+  setupElement.style.left = setupElementLeft + 'px';
+  setupElement.style.top = setupElementTop + 'px';
 }
 
-// setupElement.classList.remove('hidden'); // убрать
 function openSetup() {
   setupElement.classList.remove('hidden');
+  setupElementLeft = setupElement.offsetLeft;
+  setupElementTop = setupElement.offsetTop;
   document.addEventListener('keydown', onEscKeydown);
 }
 
