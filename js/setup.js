@@ -71,6 +71,9 @@ var setupFireBallElement = setupElement.querySelector('.setup-fireball-wrap');
 var setupFireBallValElement = setupElement.querySelector('input[name=fireball-color]');
 var setupElementLeft;
 var setupElementTop;
+var artifactsShopElement = setupElement.querySelector('.setup-artifacts-shop');
+var artifactsElement = setupElement.querySelector('.setup-artifacts');
+var artifact;
 
 // ФУНКЦИИ
 function getRandElem(arr) {
@@ -183,6 +186,55 @@ setupCoatElement.addEventListener('click', function () {
   var color = getRandElem(COAT_COLORS);
   setupCoatElement.style.fill = color;
   setupCoatValElement.value = color;
+});
+
+
+artifactsShopElement.addEventListener('dragstart', function (e) {
+  artifact = e.target.cloneNode();
+  artifactsElement.style.outline = '2px dashed red';
+});
+
+artifactsShopElement.addEventListener('dragend', function () {
+  artifactsElement.style.outline = '';
+});
+
+artifactsElement.addEventListener('dragstart', function (e) {
+  artifact = e.target;
+  artifactsElement.style.outline = '2px dashed red';
+});
+
+artifactsElement.addEventListener('dragend', function () {
+  artifactsElement.style.outline = '';
+});
+
+artifactsElement.addEventListener('dragenter', function (e) {
+  var target = e.target;
+
+  if (!target.closest('.setup-artifacts-cell').firstChild) {
+    target.style.backgroundColor = 'yellow';
+  }
+});
+
+artifactsElement.addEventListener('dragleave', function (e) {
+  var target = e.target;
+
+  target.style.backgroundColor = '';
+});
+
+artifactsElement.addEventListener('dragover', function (e) {
+  e.preventDefault();
+});
+
+artifactsElement.addEventListener('drop', function (e) {
+  e.preventDefault();
+  var target = e.target;
+
+  artifactsElement.style.outline = '';
+  target.style.backgroundColor = '';
+
+  if (!target.closest('.setup-artifacts-cell').firstChild) {
+    e.target.appendChild(artifact);
+  }
 });
 
 
