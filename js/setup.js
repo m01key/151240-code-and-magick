@@ -50,39 +50,35 @@ var FIREBALL_COLORS = [
 
 var MAGES_AMOUNT = 4;
 
-var KEY_ENTER = 13;
-var KEY_ESC = 27;
-
 
 // ПЕРЕМЕННЫЕ (пути)
-var mageListElement = document.querySelector('.setup-similar-list');
 var mageItemTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
+var mageListElement = document.querySelector('.setup-similar-list');
 var setupElement = document.querySelector('.setup');
-var avatarElement = document.querySelector('.setup-open');
-var avatarImgElement = avatarElement.querySelector('.setup-open-icon');
-var setupCrossElement = setupElement.querySelector('.setup-close');
-var setupUserNameElement = setupElement.querySelector('.setup-user-name');
 var setupCoatElement = setupElement.querySelector('.wizard-coat');
 var setupCoatValElement = setupElement.querySelector('input[name=coat-color]');
 var setupEyesElement = setupElement.querySelector('.wizard-eyes');
 var setupEyesValElement = setupElement.querySelector('input[name=eyes-color]');
 var setupFireBallElement = setupElement.querySelector('.setup-fireball-wrap');
 var setupFireBallValElement = setupElement.querySelector('input[name=fireball-color]');
+var artifactsShopElement = setupElement.querySelector('.setup-artifacts-shop');
+var artifactsElement = setupElement.querySelector('.setup-artifacts');
+var artifact;
 
 
 // ФУНКЦИИ
-var getRandElem = function (arr) {
+function getRandElem(arr) {
   var randomIndex = Math.random() * arr.length;
   randomIndex = Math.floor(randomIndex);
 
   return arr[randomIndex];
-};
+}
 
 /**
  * Создает магов
  * @return {array} - Массив из MAGES_AMOUNT магов
  */
-var createMages = function () {
+function createMages() {
   var mages = [];
 
   for (var i = 0; i < MAGES_AMOUNT; i++) {
@@ -94,27 +90,27 @@ var createMages = function () {
   }
 
   return mages;
-};
+}
 
 /**
  * Создает DOM-элемент мага
  * @param  {object} data - Данные для шаблона
  * @return {DOMElement}  - Маг
  */
-var createMageDOMElement = function (data) {
+function createMageDOMElement(data) {
   var mage = mageItemTemplate.cloneNode(true);
   mage.querySelector('.setup-similar-label').textContent = data.name;
   mage.querySelector('.wizard-coat').style.fill = data.coatColor;
   mage.querySelector('.wizard-eyes').style.fill = data.eyesColor;
 
   return mage;
-};
+}
 
 /**
  * Создает DOM-элементы магов и вставляет в разметку
  * @param  {array} data - Данные для шаблона
  */
-var insertDOMElements = function (data) {
+function insertDOMElements(data) {
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < data.length; i++) {
@@ -123,44 +119,10 @@ var insertDOMElements = function (data) {
   }
 
   mageListElement.appendChild(fragment);
-};
-
-var onEscKeydown = function (e) {
-  if (e.keyCode === KEY_ESC) {
-    closeSetup();
-  }
-};
-
-var closeSetup = function () {
-  setupElement.classList.add('hidden');
-  document.removeEventListener('keydown', onEscKeydown);
-};
-
-var openSetup = function () {
-  setupElement.classList.remove('hidden');
-  document.addEventListener('keydown', onEscKeydown);
-};
+}
 
 
 // СОБЫТИЯ
-avatarElement.addEventListener('click', openSetup);
-avatarImgElement.addEventListener('keydown', function (e) {
-  if (e.keyCode === KEY_ENTER) {
-    openSetup();
-  }
-});
-
-setupCrossElement.addEventListener('click', closeSetup);
-setupCrossElement.addEventListener('keydown', function (e) {
-  if (e.keyCode === KEY_ENTER) {
-    closeSetup();
-  }
-});
-
-setupUserNameElement.addEventListener('keydown', function (e) {
-  e.stopPropagation();
-});
-
 setupEyesElement.addEventListener('click', function () {
   var color = getRandElem(EYES_COLORS);
   setupEyesElement.style.fill = color;
@@ -177,6 +139,54 @@ setupCoatElement.addEventListener('click', function () {
   var color = getRandElem(COAT_COLORS);
   setupCoatElement.style.fill = color;
   setupCoatValElement.value = color;
+});
+
+artifactsShopElement.addEventListener('dragstart', function (e) {
+  artifact = e.target.cloneNode();
+  artifactsElement.style.outline = '2px dashed red';
+});
+
+artifactsShopElement.addEventListener('dragend', function () {
+  artifactsElement.style.outline = '';
+});
+
+artifactsElement.addEventListener('dragstart', function (e) {
+  artifact = e.target;
+  artifactsElement.style.outline = '2px dashed red';
+});
+
+artifactsElement.addEventListener('dragend', function () {
+  artifactsElement.style.outline = '';
+});
+
+artifactsElement.addEventListener('dragenter', function (e) {
+  var target = e.target;
+
+  if (!target.closest('.setup-artifacts-cell').firstChild) {
+    target.style.backgroundColor = 'yellow';
+  }
+});
+
+artifactsElement.addEventListener('dragleave', function (e) {
+  var target = e.target;
+
+  target.style.backgroundColor = '';
+});
+
+artifactsElement.addEventListener('dragover', function (e) {
+  e.preventDefault();
+});
+
+artifactsElement.addEventListener('drop', function (e) {
+  e.preventDefault();
+  var target = e.target;
+
+  artifactsElement.style.outline = '';
+  target.style.backgroundColor = '';
+
+  if (!target.closest('.setup-artifacts-cell').firstChild) {
+    e.target.appendChild(artifact);
+  }
 });
 
 

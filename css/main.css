@@ -1005,6 +1005,7 @@ input[type=radio]:checked + .review-mark-label
     display: block;
 
     margin: 0;
+    z-index: 10;
 }
 
 .upload input
