@@ -2,28 +2,6 @@
 
 (function () {
 
-  var FIRST_NAMES = [
-    'Иван',
-    'Хуан Себастьян',
-    'Мария',
-    'Кристоф',
-    'Виктор',
-    'Юлия',
-    'Люпита',
-    'Вашингтон'
-  ];
-
-  var LAST_NAMES = [
-    'да Марья',
-    'Верон',
-    'Мирабелла',
-    'Вальц',
-    'Онопко',
-    'Топольницкая',
-    'Нионго',
-    'Ирвинг'
-  ];
-
   var COAT_COLORS = [
     'rgb(101, 137, 164)',
     'rgb(241, 43, 107)',
@@ -51,10 +29,10 @@
 
   var MAGES_AMOUNT = 4;
 
-
   var mageItemTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
   var mageListElement = document.querySelector('.setup-similar-list');
   var setupElement = document.querySelector('.setup');
+  var setupFormElement = setupElement.querySelector('.setup-wizard-form');
   var setupCoatElement = setupElement.querySelector('.wizard-coat');
   var setupCoatValElement = setupElement.querySelector('input[name=coat-color]');
   var setupEyesElement = setupElement.querySelector('.wizard-eyes');
@@ -73,22 +51,41 @@
     return arr[randomIndex];
   }
 
-  /**
-   * Создает магов
-   * @return {array} - Массив из MAGES_AMOUNT магов
-   */
-  function createMages() {
-    var mages = [];
+  function shakeArr(arr) {
+    arr.sort(function () {
+      return Math.random() - 0.5;
+    });
 
-    for (var i = 0; i < MAGES_AMOUNT; i++) {
-      mages[i] = {
-        name: getRandElem(FIRST_NAMES) + ' ' + getRandElem(LAST_NAMES),
-        coatColor: getRandElem(COAT_COLORS),
-        eyesColor: getRandElem(EYES_COLORS)
-      };
-    }
+    return arr;
+  }
 
-    return mages;
+  function showMessage(message, color) {
+    var div = document.createElement('div');
+    div.style = 'position: fixed; left: 0; right: 0; z-index: 999; padding: 5px 0; box-shadow: 0 3px 10px rgba(0,0,0,0.3); text-align: center; font-size: 20px;';
+    div.style.backgroundColor = color;
+    div.textContent = message;
+    document.body.insertAdjacentElement('afterbegin', div);
+
+    setTimeout(function () {
+      div.parentElement.removeChild(div);
+    }, 3000);
+  }
+
+  function onLoadSuccess(message) {
+    showMessage(message, 'green');
+  }
+
+  function onLoadError(message) {
+    showMessage(message, 'red');
+  }
+
+  function onSaveSuccess(message) {
+    window.dialog.close();
+    showMessage(message, 'green');
+  }
+
+  function onSaveError(message) {
+    showMessage(message, 'red');
   }
 
   /**
@@ -99,8 +96,8 @@
   function createMageDOMElement(data) {
     var mage = mageItemTemplate.cloneNode(true);
     mage.querySelector('.setup-similar-label').textContent = data.name;
-    mage.querySelector('.wizard-coat').style.fill = data.coatColor;
-    mage.querySelector('.wizard-eyes').style.fill = data.eyesColor;
+    mage.querySelector('.wizard-coat').style.fill = data.colorCoat;
+    mage.querySelector('.wizard-eyes').style.fill = data.colorEyes;
 
     return mage;
   }
@@ -112,7 +109,9 @@
   function insertDOMElements(data) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < data.length; i++) {
+    shakeArr(data);
+
+    for (var i = 0; i < MAGES_AMOUNT; i++) {
       var mage = createMageDOMElement(data[i]);
       fragment.appendChild(mage);
     }
@@ -159,7 +158,6 @@
 
   artifactsElement.addEventListener('dragenter', function (e) {
     var target = e.target;
-
     if (!target.closest('.setup-artifacts-cell').firstChild) {
       target.style.backgroundColor = 'yellow';
     }
@@ -167,7 +165,6 @@
 
   artifactsElement.addEventListener('dragleave', function (e) {
     var target = e.target;
-
     target.style.backgroundColor = '';
   });
 
@@ -187,11 +184,18 @@
     }
   });
 
+  setupFormElement.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var formData = new FormData(setupFormElement);
+    window.backend.save(formData, onSaveSuccess, onSaveError);
+  });
+
 
   document.querySelector('.setup-similar').classList.remove('hidden');
 
-  var mages = createMages();
-  insertDOMElements(mages);
+  window.insertDOMElements = insertDOMElements;
+
+  window.backend.load(onLoadSuccess, onLoadError);
 
 })();
 

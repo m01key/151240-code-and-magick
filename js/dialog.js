@@ -91,5 +91,10 @@
     e.stopPropagation();
   });
 
+
+  window.dialog = {
+    close: closeSetup
+  };
+
 })();
 
