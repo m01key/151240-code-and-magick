@@ -2,7 +2,6 @@
 
 window.renderStatistics = function (ctx, names, times) {
 
-  // константы
   var FONT = 'PT Mono 16px';
   var FONT_HEIGHT = 20;
   var BAR_CHART = 150;
@@ -18,7 +17,11 @@ window.renderStatistics = function (ctx, names, times) {
   var CLOUD_ANGLE = 20;
   var CLOUD_CENTER_X = CLOUD_WIDTH / 2 + CLOUD_X;
 
-  // функции
+  var maxTime = getMaxElem(times);
+  var barColor;
+  var coordX;
+
+
   function getMaxElem(arr) {
     var max = 0;
     for (var i = 0; i < arr.length; i++) {
@@ -71,10 +74,6 @@ window.renderStatistics = function (ctx, names, times) {
   drawText('Список результатов:', CLOUD_CENTER_X, CLOUD_PADDING_HEIGHT + FONT_HEIGHT, FONT, 'center', 'top', '#000');
 
   // гистограмма
-  var maxTime = getMaxElem(times);
-  var barColor;
-  var coordX;
-
   for (var i = 0; i < names.length; i++) {
     var time = Math.round(times[i]);
     var barHeight = time * BAR_MAX_HEIGHT / maxTime;

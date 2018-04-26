@@ -1020,3 +1020,15 @@ input[type=radio]:checked + .review-mark-label
 
     opacity: 0;
 }
+
+.error-mesage {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  padding: 5px 0;
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+  text-align: center;
+  font-size: 20px;
+}
