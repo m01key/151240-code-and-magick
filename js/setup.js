@@ -51,7 +51,7 @@
     return arr[randomIndex];
   }
 
-  function shakeArr(arr) {
+  function shuffleArray(arr) {
     arr.sort(function () {
       return Math.random() - 0.5;
     });
@@ -60,14 +60,14 @@
   }
 
   function showMessage(message, color) {
-    var div = document.createElement('div');
-    div.style = 'position: fixed; left: 0; right: 0; z-index: 999; padding: 5px 0; box-shadow: 0 3px 10px rgba(0,0,0,0.3); text-align: center; font-size: 20px;';
-    div.style.backgroundColor = color;
-    div.textContent = message;
-    document.body.insertAdjacentElement('afterbegin', div);
+    var messageElement = document.createElement('div');
+    messageElement.classList.add('error-mesage');
+    messageElement.style.backgroundColor = color;
+    messageElement.textContent = message;
+    document.body.insertAdjacentElement('afterbegin', messageElement);
 
     setTimeout(function () {
-      div.parentElement.removeChild(div);
+      messageElement.parentElement.removeChild(messageElement);
     }, 3000);
   }
 
@@ -88,11 +88,6 @@
     showMessage(message, 'red');
   }
 
-  /**
-   * Создает DOM-элемент мага
-   * @param  {object} data - Данные для шаблона
-   * @return {DOMElement}  - Маг
-   */
   function createMageDOMElement(data) {
     var mage = mageItemTemplate.cloneNode(true);
     mage.querySelector('.setup-similar-label').textContent = data.name;
@@ -102,14 +97,10 @@
     return mage;
   }
 
-  /**
-   * Создает DOM-элементы магов и вставляет в разметку
-   * @param  {array} data - Данные для шаблона
-   */
   function insertDOMElements(data) {
     var fragment = document.createDocumentFragment();
 
-    shakeArr(data);
+    shuffleArray(data);
 
     for (var i = 0; i < MAGES_AMOUNT; i++) {
       var mage = createMageDOMElement(data[i]);
