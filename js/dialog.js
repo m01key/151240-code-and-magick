@@ -25,14 +25,30 @@
     setupElement.style.top = '';
   }
 
+
   function onEscKeydown(e) {
     if (e.keyCode === KEY_ESC) {
       closeSetup();
     }
   }
 
+  function onAvatarKeydown(e) {
+    if (e.keyCode === KEY_ENTER) {
+      openSetup();
+    }
+  }
 
-  setupUserPicElement.addEventListener('mousedown', function (e) {
+  function onSetupCross(e) {
+    if (e.keyCode === KEY_ENTER) {
+      closeSetup();
+    }
+  }
+
+  function onSetupNameKeydown(e) {
+    e.stopPropagation();
+  }
+
+  function onSetupUserPic(e) {
     e.preventDefault();
 
     var coordsStart = {
@@ -70,26 +86,15 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
+  }
 
-  });
 
+  setupUserPicElement.addEventListener('mousedown', onSetupUserPic);
   avatarElement.addEventListener('click', openSetup);
-  avatarImgElement.addEventListener('keydown', function (e) {
-    if (e.keyCode === KEY_ENTER) {
-      openSetup();
-    }
-  });
-
+  avatarImgElement.addEventListener('keydown', onAvatarKeydown);
   setupCrossElement.addEventListener('click', closeSetup);
-  setupCrossElement.addEventListener('keydown', function (e) {
-    if (e.keyCode === KEY_ENTER) {
-      closeSetup();
-    }
-  });
-
-  setupUserNameElement.addEventListener('keydown', function (e) {
-    e.stopPropagation();
-  });
+  setupCrossElement.addEventListener('keydown', onSetupCross);
+  setupUserNameElement.addEventListener('keydown', onSetupNameKeydown);
 
 
   window.dialog = {
