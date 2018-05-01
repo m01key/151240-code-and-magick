@@ -29,6 +29,8 @@
 
   var MAGES_AMOUNT = 4;
 
+  var DEBOUNCE_TIME = 500;
+
   var mageItemTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
   var mageListElement = document.querySelector('.setup-similar-list');
   var setupElement = document.querySelector('.setup');
@@ -42,6 +44,10 @@
   var artifactsShopElement = setupElement.querySelector('.setup-artifacts-shop');
   var artifactsBagElement = setupElement.querySelector('.setup-artifacts');
   var artifact;
+  var mages;
+  var colorCoat;
+  var colorEyes;
+  var timerId;
 
 
   function getRandElem(arr) {
@@ -81,16 +87,43 @@
   }
 
   function insertDOMElements(data) {
+    if (data) {
+      mages = data;
+      shuffleArray(mages);
+    }
     var fragment = document.createDocumentFragment();
-    shuffleArray(data);
-
     for (var i = 0; i < MAGES_AMOUNT; i++) {
-      var mage = createMageDOMElement(data[i]);
+      var mage = createMageDOMElement(mages[i]);
       fragment.appendChild(mage);
     }
+    mageListElement.innerHTML = '';
     mageListElement.appendChild(fragment);
   }
 
+  function debounce(cb) {
+    if (timerId) {
+      clearTimeout(timerId);
+      timerId = null;
+    }
+    timerId = setTimeout(cb, DEBOUNCE_TIME);
+  }
+
+  function renderSimilarMage() {
+    mages.forEach(function (elem) {
+      elem.rating = 0;
+      if (elem.colorCoat === colorCoat) {
+        elem.rating += 2;
+      }
+      if (elem.colorEyes === colorEyes) {
+        elem.rating += 1;
+      }
+    });
+    mages.sort(function (a, b) {
+      return b.rating - a.rating;
+    });
+
+    insertDOMElements();
+  }
 
   function onLoadSuccess(message) {
     showMessage(message, 'green');
@@ -110,9 +143,10 @@
   }
 
   function onSetupEyesClick() {
-    var color = getRandElem(EYES_COLORS);
-    setupEyesElement.style.fill = color;
-    setupEyesValElement.value = color;
+    colorEyes = getRandElem(EYES_COLORS);
+    setupEyesElement.style.fill = colorEyes;
+    setupEyesValElement.value = colorEyes;
+    debounce(renderSimilarMage);
   }
 
   function onSetupFireBallClick() {
@@ -122,9 +156,10 @@
   }
 
   function onSetupCoatClick() {
-    var color = getRandElem(COAT_COLORS);
-    setupCoatElement.style.fill = color;
-    setupCoatValElement.value = color;
+    colorCoat = getRandElem(COAT_COLORS);
+    setupCoatElement.style.fill = colorCoat;
+    setupCoatValElement.value = colorCoat;
+    debounce(renderSimilarMage);
   }
 
   function onSetupFormSubmit(e) {
